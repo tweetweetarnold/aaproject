@@ -1,4 +1,6 @@
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
@@ -20,15 +22,15 @@ public class CommandLineChat implements MessageListener {
 			System.out.println("usage: username subscribe-to-queue-name publish-to-queue-name");
 		} else {
 			String username = args[0];
-			System.out.println("usage: " + username + " | subscribe to queue: " + args[1]
-					+ " | publish to queue: " + args[2]);
+			System.out.println(
+					"usage: " + username + " | subscribe to queue: " + args[1] + " | publish to queue: " + args[2]);
 
 			CommandLineChat commandLineChat = new CommandLineChat();
 			Context initialContext = CommandLineChat.getInitialContext();
 			Queue q1 = (Queue) initialContext.lookup(args[1]);
 			Queue q2 = (Queue) initialContext.lookup(args[2]);
-			JMSContext jmsContext = ((ConnectionFactory) initialContext
-					.lookup("java:comp/DefaultJMSConnectionFactory")).createContext();
+			JMSContext jmsContext = ((ConnectionFactory) initialContext.lookup("java:comp/DefaultJMSConnectionFactory"))
+					.createContext();
 			jmsContext.createConsumer(q1).setMessageListener(commandLineChat);
 
 			JMSProducer jmsProducer = jmsContext.createProducer();
@@ -39,6 +41,8 @@ public class CommandLineChat implements MessageListener {
 				if (messageToSend.equalsIgnoreCase("exit")) {
 					jmsContext.close();
 					System.exit(0);
+				} else {
+					jmsProducer.send(q2, "[" + username + ": " + messageToSend + "]");
 				}
 
 			}
@@ -48,8 +52,7 @@ public class CommandLineChat implements MessageListener {
 
 	public static Context getInitialContext() throws JMSException, NamingException {
 		Properties p = new Properties();
-		p.setProperty("java.naming.factory.initial",
-				"com.sun.enterprise.naming.SerialInitContextFactory");
+		p.setProperty("java.naming.factory.initial", "com.sun.enterprise.naming.SerialInitContextFactory");
 		p.setProperty("java.naming.factory.url.pkgs", "com.sun.enterprise.naming");
 		p.setProperty("java.naming.provider.url", "iiop://localhost:3700");
 		return new InitialContext(p);
