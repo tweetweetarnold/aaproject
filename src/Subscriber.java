@@ -17,7 +17,8 @@ public class Subscriber {
 		Topic topic = (Topic) ctx.lookup("topic0");
 
 		// lookup the topic connection factory
-		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("topic/connectionFactory");
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx
+				.lookup("topic/connectionFactory");
 
 		// create a topic connection
 		TopicConnection topicConn = connFactory.createTopicConnection();
@@ -30,6 +31,7 @@ public class Subscriber {
 
 		// start the connection
 		topicConn.start();
+		System.out.println("started...");
 
 		// receive the message
 		TextMessage message = (TextMessage) topicSubscriber.receive();
