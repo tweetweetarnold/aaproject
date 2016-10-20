@@ -13,10 +13,10 @@ public class Concurrent {
 		InitialContext ctx = new InitialContext();
 
 		// lookup the topic object
-		Topic topic = (Topic) ctx.lookup("topic0");
+		Topic topic = (Topic) ctx.lookup("jms/topic0");
 
 		// lookup the topic connection factory
-		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("topic/connectionFactory");
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("topic/connectionFactory2");
 
 		// create a topic connection
 		TopicConnection topicConn = connFactory.createTopicConnection();

@@ -14,14 +14,15 @@ public class Subscriber {
 		InitialContext ctx = new InitialContext();
 
 		// lookup the topic object
-		Topic topic = (Topic) ctx.lookup("topic0");
+		Topic topic = (Topic) ctx.lookup("jms/topic0");
 
 		// lookup the topic connection factory
-		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx
-				.lookup("topic/connectionFactory");
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("topic/connectionFactory");
 
 		// create a topic connection
 		TopicConnection topicConn = connFactory.createTopicConnection();
+		System.out.println("clientid: " + topicConn.getClientID());
+//		topicConn.setClientID("subscriber");
 
 		// create a topic session
 		TopicSession topicSession = topicConn.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
