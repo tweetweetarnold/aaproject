@@ -33,7 +33,8 @@ public class Publisher {
 
 		// create a topic publisher
 		TopicPublisher topicPublisher = topicSession.createPublisher(topic);
-		topicPublisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+//		topicPublisher.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		topicPublisher.setDeliveryMode(DeliveryMode.PERSISTENT);
 
 		// create the "Hello World" message
 		TextMessage message = topicSession.createTextMessage();

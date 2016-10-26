@@ -7,7 +7,7 @@ import javax.jms.ServerSessionPool;
 import javax.jms.TextMessage;
 import javax.jms.TopicConnection;
 
-public class MyServerSessionPool implements ServerSessionPool, ExceptionListener, MessageListener {
+public class MyServerSessionPool implements ServerSessionPool, ExceptionListener {
 	private final TopicConnection _conn;
 
 	MyServerSessionPool(TopicConnection conn) {
@@ -22,16 +22,16 @@ public class MyServerSessionPool implements ServerSessionPool, ExceptionListener
 		ex.printStackTrace();
 	}
 
-	@Override
-	public void onMessage(Message msg) {
-		// TODO Auto-generated method stub
-		TextMessage m = (TextMessage) msg;
-		try {
-			System.out.println(m.getText());
-		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+//	@Override
+//	public void onMessage(Message msg) {
+//		// TODO Auto-generated method stub
+//		TextMessage m = (TextMessage) msg;
+//		try {
+//			System.out.println("thread" + Thread.currentThread().getName() + ": " + m.getText());
+//		} catch (JMSException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 }

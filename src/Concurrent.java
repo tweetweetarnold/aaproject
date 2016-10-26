@@ -1,4 +1,4 @@
-import javax.jms.Message;
+import javax.jms.ConnectionConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
@@ -17,8 +17,7 @@ public class Concurrent {
 		Topic topic = (Topic) ctx.lookup("jms/topic0");
 
 		// lookup the topic connection factory
-		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx
-				.lookup("topic/connectionFactory2");
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("topic/connectionFactory2");
 
 		// create a topic connection
 		TopicConnection topicConn = connFactory.createTopicConnection();
@@ -30,7 +29,10 @@ public class Concurrent {
 		// ****ERROR HERE****
 		// create a topic connection consumer
 		// ConnectionConsumer connConsumer =
-		// topicConn.createConnectionConsumer(topic, null, ssPool, 10);
+		topicConn.createConnectionConsumer(topic, null, ssPool, 10);
+		// ConnectionConsumer connConsumer =
+		// topicConn.createDurableConnectionConsumer(topic, "arnold", null,
+		// ssPool, 10);
 
 		// start the connection
 		topicConn.start();
@@ -53,8 +55,8 @@ public class Concurrent {
 		publisher.close();
 
 		// wait for connection consumer
-		//		while (true) {
-		//			Thread.sleep(10000);
-		//		}
+		while (true) {
+			Thread.sleep(10000);
+		}
 	}
 }
