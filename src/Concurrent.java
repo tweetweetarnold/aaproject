@@ -1,5 +1,6 @@
 import javax.jms.Message;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
@@ -16,7 +17,8 @@ public class Concurrent {
 		Topic topic = (Topic) ctx.lookup("jms/topic0");
 
 		// lookup the topic connection factory
-		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx.lookup("topic/connectionFactory2");
+		TopicConnectionFactory connFactory = (TopicConnectionFactory) ctx
+				.lookup("topic/connectionFactory2");
 
 		// create a topic connection
 		TopicConnection topicConn = connFactory.createTopicConnection();
@@ -38,19 +40,21 @@ public class Concurrent {
 		TopicSession session = topicConn.createTopicSession(false, ackMode);
 		TopicPublisher publisher = session.createPublisher(topic);
 
-		Message msg = session.createMessage();
+		TextMessage msg = session.createTextMessage();
+		int num = 100000;
 
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < num; i++) {
+			msg.setText("This is message " + i);
 			publisher.publish(msg);
 		}
 
-		System.out.println("sent 1000 messages");
+		System.out.println("sent " + num + " messages");
 
 		publisher.close();
 
 		// wait for connection consumer
-		while (true) {
-			Thread.sleep(10000);
-		}
+		//		while (true) {
+		//			Thread.sleep(10000);
+		//		}
 	}
 }
